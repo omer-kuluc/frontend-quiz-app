@@ -112,6 +112,12 @@ a {
   margin-inline : auto;
 }
 
+.topicSection {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
 .show-modes {
   display: flex;
   gap: 20px;
@@ -164,6 +170,14 @@ a {
   background: white;
   border-radius: 10px;
   padding: 10px;
+}
+
+.area-text {
+  font-size: 28px;
+  font-weight: 500;
+  line-height: 28px;
+  color : #313E51;
+
 }
 
 .option-buttons {
@@ -391,6 +405,14 @@ a {
   line-height: 18px;
   text-align: center;
   color : white;
+}
+
+.result-area {
+  display: flex;
+  gap: 10px;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
 }
 
 @media (width>=768px) {

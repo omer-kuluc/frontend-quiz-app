@@ -398,7 +398,7 @@ for (const card of cards) {
 
 function handlecardBtn() {
   cardInnerText = this.innerText;
-
+  console.log(cardInnerText);
   questionArea.classList.remove('d-none');
 
   title = this.innerText;
@@ -441,7 +441,10 @@ function renderQuestions() {
   const headerArea = document.querySelector('.header');
 
   headerArea.innerHTML = `
-      <div class = "topicSection">${cardInnerText}</div>
+      <div class = "topicSection">
+        <img src="assets/img/${cardInnerText.toLocaleLowerCase('en')}-icon.svg" alt="">
+        <p class = "area-text">${cardInnerText}</p>
+      </div>
       <div class = "header-images">
       <img src="assets/img/light-theme.svg" alt="Light theme">
       <img src="assets/img/dark-theme.svg" alt="Dark theme">
@@ -565,7 +568,10 @@ function renderQuestions() {
             </div>
             <div class = "desktop-right-result">
               <div class = "result-card">
-                <p class="area">${cardInnerText}</p>
+                <div class = "result-area">
+                <img src="assets/img/${cardInnerText.toLocaleLowerCase()}-icon.svg" alt="">
+                <p class="area-text">${cardInnerText}</p>
+                </div>
                 <p class = "score">${correctAnswerCounter}</p>
                 <p class= "outOfTen">out of 10</p>
               </div>
@@ -573,11 +579,11 @@ function renderQuestions() {
             </div>
           </div>
           `
-          headerArea.classList.add('w-640');
+          // headerArea.classList.add('w-640');
           alert("Test tamamlandı!");
 
         }
-      }, 1250);
+      }, 250);
     } else {
 
       warnArea.classList.remove('d-none');
