@@ -398,7 +398,6 @@ for (const card of cards) {
 
 function handlecardBtn() {
   cardInnerText = this.innerText;
-  console.log(cardInnerText);
   questionArea.classList.remove('d-none');
 
   title = this.innerText;
@@ -416,13 +415,20 @@ function selectOption(title) {
 
 }
 
+function escapeHTML(input) {
+  return input.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+
+
 let index = 1;
 
 function handleQuestions(questions) {
   for (const que of questions) {
+    console.log(typeof (que.question));
+    const fixedQuestion = escapeHTML(que.question); // Yardımcı fonksiyon ile işleniyor
     q.push({
       number: index,
-      question: que.question,
+      question: fixedQuestion,
       selects: que.options,
       answer: que.answer
     });
@@ -436,20 +442,18 @@ let i = 0;
 
 let correctAnswerCounter = 0;
 
+const headerArea = document.querySelector('.header');
+const topicSection = document.querySelector('.topicSection');
 
 function renderQuestions() {
-  const headerArea = document.querySelector('.header');
 
-  headerArea.innerHTML = `
+
+  topicSection.innerHTML = `
       <div class = "topicSection">
         <img src="assets/img/${cardInnerText.toLocaleLowerCase('en')}-icon.svg" alt="">
         <p class = "area-text">${cardInnerText}</p>
       </div>
-      <div class = "header-images">
-      <img src="assets/img/light-theme.svg" alt="Light theme">
-      <img src="assets/img/dark-theme.svg" alt="Dark theme">
-      </div>
-  </div>
+   
   `
   questionArea.innerHTML = `
 
@@ -529,11 +533,9 @@ function renderQuestions() {
     const allOptionBtns = document.querySelectorAll('.option');
 
     if (selectedOption) {
-      console.log(document.activeElement);
 
       const selectedText = selectedOption.innerText.split("| ")[1].trim();
       const correctAnswer = q[i].answer;
-
 
       if (selectedText === correctAnswer) {
         selectedOption.classList.remove('red');
@@ -575,15 +577,15 @@ function renderQuestions() {
                 <p class = "score">${correctAnswerCounter}</p>
                 <p class= "outOfTen">out of 10</p>
               </div>
-              <button class="playAgainBtn"><a href = "/">Play again</a></button>
+                <div class="playAgainBtn">
+                  <a href = "/">Play again</a>
+                </div>
             </div>
           </div>
           `
-          // headerArea.classList.add('w-640');
-          alert("Test tamamlandı!");
 
         }
-      }, 250);
+      }, 2000);
     } else {
 
       warnArea.classList.remove('d-none');
@@ -651,4 +653,30 @@ function selectsClarify(selects) {
 
 // }
 
+if (localStorage.isDarkMode === "true") {
+  document.body.classList.add('darkMode');
+  themeChange.checked = true;
+}
 
+else {
+  document.body.classList.remove('darkMode');
+  themeChange.checked = false;
+}
+
+
+themeChange.addEventListener('change', function () {
+  if (themeChange.checked) {
+    document.body.classList.add('darkMode');
+    localStorage.isDarkMode = true;
+    // console.log('dark mode');
+
+  }
+  else {
+    document.body.classList.remove('darkMode');
+    localStorage.isDarkMode = false;
+    // console.log('light mode');
+
+  }
+
+
+});
