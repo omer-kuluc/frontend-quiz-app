@@ -424,7 +424,6 @@ let index = 1;
 
 function handleQuestions(questions) {
   for (const que of questions) {
-    console.log(typeof (que.question));
     const fixedQuestion = escapeHTML(que.question); // Yardımcı fonksiyon ile işleniyor
     q.push({
       number: index,
@@ -470,7 +469,7 @@ function renderQuestions() {
     <div class="buttons-section">
       <p>${selectsClarify(q[i].selects)}</p>
       <div class="button-bottom-part">
-        <button class="submitBtn">Submit</button>
+        <button class="submitBtn">Submit Answer</button>
 
           <div class = "warn-area">
               <img  class = "cross-icon" src="assets/img/cross-icon.svg" alt="">
@@ -531,72 +530,80 @@ function renderQuestions() {
 
   submitBtn.addEventListener('click', function () {
     const allOptionBtns = document.querySelectorAll('.option');
+    if (submitBtn.innerText === "Submit Answer") {
 
-    if (selectedOption) {
 
-      const selectedText = selectedOption.innerText.split("| ")[1].trim();
-      const correctAnswer = q[i].answer;
+      if (selectedOption) {
 
-      if (selectedText === correctAnswer) {
-        selectedOption.classList.remove('red');
+        const selectedText = selectedOption.innerText.split("| ")[1].trim();
+        const correctAnswer = q[i].answer;
 
-        selectedOption.classList.add('green');
-        // console.log('doğru')
-        correctAnswerCounter++;
+        if (selectedText === correctAnswer) {
+          selectedOption.classList.remove('red');
+
+          selectedOption.classList.add('green');
+          // console.log('doğru')
+          correctAnswerCounter++;
+        } else {
+
+          selectedOption.classList.remove('green');
+          selectedOption.classList.add('red');
+
+          allOptionBtns.forEach((btn) => {
+            if (btn.innerText.split("| ")[1].trim() === correctAnswer) {
+              btn.classList.add('green');
+            }
+          });
+        }
+        submitBtn.innerText = "Next Question";
+      }
+
+      else {
+        warnArea.classList.remove('d-none');
+        warnArea.classList.add('d-flex');
+        warnTxt.classList.remove('d-none');
+        warnTxt.classList.add('d-block');
+        crossIcon.classList.remove('d-none');
+        crossIcon.classList.add('d-block');
+      }
+
+    }
+    else if (submitBtn.innerText === "Next Question") {
+      i++;
+
+      if (i < q.length) {
+        renderQuestions();
+        submitBtn.innerText === "Submit Answer";
       } else {
+        questionArea.innerHTML = `
+        <div class = "result-section" >
 
-        selectedOption.classList.remove('green');
-        selectedOption.classList.add('red');
+          <div class = "result-intro">
+            <h2>Quiz completed</h2>
+            <h3>You scored...</h3>
+          </div>
+          <div class = "desktop-right-result">
+            <div class = "result-card">
+              <div class = "result-area">
+              <img src="assets/img/${cardInnerText.toLocaleLowerCase()}-icon.svg" alt="">
+              <p class="area-text">${cardInnerText}</p>
+              </div>
+              <p class = "score">${correctAnswerCounter}</p>
+              <p class= "outOfTen">out of 10</p>
+            </div>
+              <div class="playAgainBtn">
+                <a href = "/">Play again</a>
+              </div>
+          </div>
+        </div>
+        `
 
-        allOptionBtns.forEach((btn) => {
-          if (btn.innerText.split("| ")[1].trim() === correctAnswer) {
-            btn.classList.add('green');
-          }
-        });
       }
 
 
-      setTimeout(() => {
-        i++;
-        if (i < q.length) {
-          renderQuestions();
-        } else {
-          questionArea.innerHTML = `
-          <div class = "result-section" >
-
-            <div class = "result-intro">
-              <h2>Quiz completed</h2>
-              <h3>You scored...</h3>
-            </div>
-            <div class = "desktop-right-result">
-              <div class = "result-card">
-                <div class = "result-area">
-                <img src="assets/img/${cardInnerText.toLocaleLowerCase()}-icon.svg" alt="">
-                <p class="area-text">${cardInnerText}</p>
-                </div>
-                <p class = "score">${correctAnswerCounter}</p>
-                <p class= "outOfTen">out of 10</p>
-              </div>
-                <div class="playAgainBtn">
-                  <a href = "/">Play again</a>
-                </div>
-            </div>
-          </div>
-          `
-
-        }
-      }, 2000);
-    } else {
-
-      warnArea.classList.remove('d-none');
-      warnArea.classList.add('d-flex');
-
-      warnTxt.classList.remove('d-none');
-      warnTxt.classList.add('d-block');
-      crossIcon.classList.remove('d-none');
-      crossIcon.classList.add('d-block');
 
     }
+
 
   });
 
@@ -622,7 +629,7 @@ function selectsClarify(selects) {
     optionsHTML += `
         <div class="option-buttons">
           <button class="option">
-          <span> ${selections[index]}</span> | ${optionText}
+          <span> ${selections[index]}</span> |  ${optionText} 
           </button >
         </div > `;
   });
@@ -680,3 +687,4 @@ themeChange.addEventListener('change', function () {
 
 
 });
+

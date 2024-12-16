@@ -62,6 +62,7 @@ button {
   cursor: pointer;
 }
 
+
 .darkMode {
   background-color: #313E51;
 
@@ -291,6 +292,8 @@ a {
   }
  
 }
+
+
 
 
 .option.selected.green {
